@@ -52,7 +52,13 @@ class PerfectSessionClass: MongoDBStORM {
 	}
 
 	init(id: String = "", token: String, userid: String, created: Int, updated: Int, idle: Int, data: [String: Any], ipaddress: String, useragent: String){
-		self.id = id
+		super.init()
+		_collection = SessionConfig.mongoCollection
+		if id.isEmpty {
+			self.id = newUUID()
+		} else {
+			self.id = id
+		}
 		self.token = token
 		self.userid = userid
 		self.created = created
