@@ -73,11 +73,11 @@ public struct MongoDBSessions {
 	}
 
 	/// Deletes the session for a session identifier.
-	public func destroy(token: String) {
+	public func destroy(_ request: HTTPRequest, _ response: HTTPResponse) {
 		let proxy = PerfectSessionClass()
 		do {
 			do {
-				try proxy.find(["token":token])
+				try proxy.find(["token":(request.session?.token)!])
 				proxy.to(proxy.results.rows[0])
 			} catch {
 				print("Error retrieving session: \(error)")
@@ -86,6 +86,22 @@ public struct MongoDBSessions {
 		} catch {
 			print(error)
 		}
+		// Reset cookie to make absolutely sure it does not get recreated in some circumstances.
+		var domain = ""
+		if !SessionConfig.cookieDomain.isEmpty {
+			domain = SessionConfig.cookieDomain
+		}
+		response.addCookie(HTTPCookie(
+			name: SessionConfig.name,
+			value: "",
+			domain: domain,
+			expires: .relativeSeconds(SessionConfig.idle),
+			path: SessionConfig.cookiePath,
+			secure: SessionConfig.cookieSecure,
+			httpOnly: SessionConfig.cookieHTTPOnly,
+			sameSite: SessionConfig.cookieSameSite
+			)
+		)
 	}
 
 	public func resume(token: String) -> PerfectSession {
