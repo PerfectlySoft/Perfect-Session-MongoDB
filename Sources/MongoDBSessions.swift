@@ -104,29 +104,30 @@ public struct MongoDBSessions {
 		)
 	}
 
-	public func resume(token: String) -> PerfectSession {
-		var session = PerfectSession()
-		let proxy = PerfectSessionClass()
-		do {
-			try proxy.find(["token":token])
-			if proxy.results.rows.isEmpty {
-				return session
-			}
-			proxy.to(proxy.results.rows[0])
+	public func resume(token: String) -> PerfectSession? {
+        let proxy = PerfectSessionClass()
+        do {
+            try proxy.find(["token":token])
+            if proxy.results.rows.isEmpty {
+                return nil
+            }
+            proxy.to(proxy.results.rows[0])
 
-			session.token = token
-			session.userid = proxy.userid
-			session.created = proxy.created
-			session.updated = proxy.updated
-			session.idle = SessionConfig.idle // update in case this has changed
-			session.data = proxy.data
-			session.ipaddress = proxy.ipaddress
-			session.useragent = proxy.useragent
-		} catch {
-			print("Error retrieving session: \(error)")
-		}
-		session._state = "resume"
-		return session
+            var session = PerfectSession()
+            session.token = token
+            session.userid = proxy.userid
+            session.created = proxy.created
+            session.updated = proxy.updated
+            session.idle = SessionConfig.idle // update in case this has changed
+            session.data = proxy.data
+            session.ipaddress = proxy.ipaddress
+            session.useragent = proxy.useragent
+            session._state = "resume"
+            return session
+        } catch {
+            print("Error retrieving session: \(error)")
+        }
+        return nil
 	}
 
 
