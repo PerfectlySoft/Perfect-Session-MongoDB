@@ -33,16 +33,17 @@ extension SessionMongoDBFilter: HTTPRequestFilter {
 	public func filter(request: HTTPRequest, response: HTTPResponse, callback: (HTTPRequestFilterResult) -> ()) {
 
 		var createSession = true
-		if let token = request.getCookie(name: SessionConfig.name) {
-			var session = driver.resume(token: token)
-			if session.isValid(request) {
-				session._state = "resume"
-				request.session = session
-				createSession = false
-			} else {
-				driver.destroy(request, response)
-			}
-		}
+        if let token = request.getCookie(name: SessionConfig.name) {
+            if var session = driver.resume(token: token) {
+                if session.isValid(request) {
+                    session._state = "resume"
+                    request.session = session
+                    createSession = false
+                } else {
+                    driver.destroy(request, response)
+                }
+            }
+        }
 		if createSession {
 			//start new session
 			request.session = driver.start(request)
