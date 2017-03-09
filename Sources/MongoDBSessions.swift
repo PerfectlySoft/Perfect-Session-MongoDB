@@ -6,7 +6,7 @@
 //
 //
 
-import TurnstileCrypto
+import Foundation
 import MongoDBStORM
 import PerfectSession
 import PerfectHTTP
@@ -49,9 +49,8 @@ public struct MongoDBSessions {
 	}
 
 	public func start(_ request:HTTPRequest) -> PerfectSession {
-		let rand = URandom()
 		var session = PerfectSession()
-		session.token = rand.secureToken
+		session.token = UUID().uuidString
 		session.ipaddress = request.remoteAddress.host
 		session.useragent = request.header(.userAgent) ?? "unknown"
 		session._state = "new"
