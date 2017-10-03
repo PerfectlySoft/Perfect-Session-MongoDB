@@ -5,3 +5,6 @@
 Package.swift.orig
 LinuxMain*
 Perfect_Session*Tests.swift
+.build_lin
+Package.resolved
+PADockerfile_build
