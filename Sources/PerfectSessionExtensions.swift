@@ -76,9 +76,8 @@ class PerfectSessionClass: MongoDBStORM {
 		created		= this.data["created"] as? Int ?? 0
 		updated		= this.data["updated"] as? Int ?? 0
 		idle		= this.data["idle"] as? Int ?? 0
-		//		data		= this.data["data"] as? String ?? "{}"
-		if let str = this.data["data"] {
-			data = try! (str as! String).jsonDecode() as! [String : Any]
+		if let _data = this.data["data"] as? [String: Any] {
+			data = _data
 		}
 		ipaddress		= this.data["ipaddress"] as? String ?? ""
 		useragent		= this.data["useragent"] as? String ?? ""
