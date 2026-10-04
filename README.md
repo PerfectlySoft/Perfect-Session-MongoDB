@@ -1,5 +1,10 @@
 # Perfect Sessions (MongoDB Driver)
 
+> **This repository is archived and no longer maintained.** It targets Swift 4 and the old MongoDB driver stack.
+> MongoDB session storage now lives in [Perfect-Session](https://github.com/PerfectlySoft/Perfect-Session) as the
+> `PerfectSessionMongoDB` backend (added in [PerfectlySoft/Perfect-Session#14](https://github.com/PerfectlySoft/Perfect-Session/pull/14)),
+> built on [Perfect-MongoDB 4](https://github.com/PerfectlySoft/Perfect-MongoDB) for Swift 6.
+
 <p align="center">
     <a href="http://perfect.org/get-involved.html" target="_blank">
         <img src="http://perfect.org/assets/github/perfect_github_2_0_0.jpg" alt="Get Involed with Perfect!" width="854" />
